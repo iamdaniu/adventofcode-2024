@@ -1,9 +1,10 @@
 import csv
 import bisect
+import collections
 
 list1 = []
 list2 = []
-with open('data/day1.csv', newline='') as csvfile:
+with open('day1/data.csv', newline='') as csvfile:
 
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 
@@ -18,4 +19,12 @@ with open('data/day1.csv', newline='') as csvfile:
     differences = list(map(add_tuple, tuples))
     result = sum(differences)
 
-    print("result: {}".format(result))
+    print("difference: {}".format(result))
+
+    # similarity score
+    occurrences_list2 = collections.Counter(list2)
+    single_similarity = map(lambda v: int(v)*int(occurrences_list2[v]), list1)
+    result = sum(single_similarity)
+
+    print("similarities: {}".format(result))
+
