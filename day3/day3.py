@@ -1,23 +1,25 @@
 import re
 
 mult_pattern = "mul\((\d+),(\d+)\)"
-disable_pattern = "don't\(\).*?do\(\)"
-
 mult_exp = re.compile(mult_pattern)
-disable_exp = re.compile(disable_pattern)
 
-with open('day3/sample.mem', newline='') as input_file:
-    lines = input_file.readlines()
+disable_pattern = "don't\(\).*?(do\(\)|$)"
 
-total = 0
-for line in lines:
-#    print(f"line: {line}")
-    #disabled = re.sub(disable_pattern, "", line)
-    #print(f"disabled: {disabled}")
 
+def calculate_line(line: str):
     matches = mult_exp.findall(line)
-    #print(f"matches: {matches}")   
     multiplied = [int(t[0]) * int(t[1]) for t in matches]
-    total = total + sum(multiplied)
+    return sum(multiplied)
+
+
+# read into single line - don'()s stay valid over line boundaries
+with open('day3/data.mem', newline='') as input_file:
+    line = input_file.read().replace('\n', '')
+
+total = calculate_line(line)
+
+disabled = re.sub(disable_pattern, "", line)
+total_enabled = calculate_line(disabled)
 
 print(f"result: {total}")
+print(f"enabled only: {total_enabled}")
