@@ -20,14 +20,10 @@ def read_order(line: str):
     else:
         return False
 
-def required_after(p1: int, p2: int):
-    order_after = orderings.get(p1)
-    return p2 in order_after
-
 def compare_by_ordering(p1: int, p2: int):
-    if required_after(p1, p2):
+    if p2 in orderings.get(p1):
         return -1
-    elif required_after(p2, p1):
+    elif p1 in orderings.get(p2):
         return 1
     else:
         return 0
