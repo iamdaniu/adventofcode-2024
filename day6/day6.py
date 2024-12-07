@@ -70,7 +70,7 @@ def read_data(filename: str) -> tuple[list[list[bool]], Guard]:
 
 
 def main():
-    maze, guard = read_data('day6/data.map')
+    maze, guard = read_data('day6/sample.map')
     for l in maze:
         out = ["#" if p else "-" for p in l]
         print(f"{out}")
@@ -83,7 +83,8 @@ def main():
             return True
         return False
     
-    visited: set[Point] = { guard.position }
+    visited: dict[Point, set[Direction]] = { guard.position: {guard.direction} }
+    obstacles: set[Point] = set()
     
     while True:
         y, x = guard.position.move(guard.direction)
@@ -94,10 +95,18 @@ def main():
             print(f"turned {guard.direction}")
         else:
             guard.move()
-            visited.add(guard.position)
+            if guard.position in visited:
+                if guard.direction.turn_right() in visited[guard.position]:
+                    y, x = guard.position.move(guard.direction)
+                    if not out_of_bounds(y, x):
+                        obstacles.add(Point(y, x))
+                visited[guard.position].add(guard.direction)
+            else:
+                visited[guard.position] = {guard.direction}
             print(f"moved to {guard.position} ({len(visited)} fields visited)")
     
     print(f"{len(visited)} fields visited")
+    print(f"obstacles: {obstacles}")
 
 
 if __name__ == "__main__":
