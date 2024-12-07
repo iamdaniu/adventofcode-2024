@@ -20,6 +20,7 @@ class Operator:
 
 PLUS = Operator("plus", lambda x, y: x + y)
 MULT = Operator("times", lambda x, y: x * y)
+CONC = Operator("concat", lambda x, y : int(f"{x}{y}"))
 
 
 class Term:
@@ -35,12 +36,12 @@ class Term:
 
 
 def candidate_terms(right: int) -> list[Term]:
-    return [Term(right, PLUS), Term(right, MULT)]
+    return [Term(right, PLUS), Term(right, MULT), Term(right, CONC)]
 
 def find_operators(solution: int, stack: list[tuple[int, Term]], values: list[int], current_result: int) -> list[tuple[int, Term]]:
     if len(values) != 0:
-        for new_term in candidate_terms(values[0]):
-            new_current_result = new_term.apply(current_result)
+        for new_term in candidate_terms(current_result):
+            new_current_result = new_term.apply(values[0])
             stack.append(new_term)
             result = find_operators(solution, stack, values[1:], new_current_result)
             if result:
