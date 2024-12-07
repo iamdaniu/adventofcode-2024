@@ -1,6 +1,7 @@
 
 import re
 from typing import Callable
+from multiprocessing import Pool
 
 line_re = r"(\d+):(.*)"
 line_pattern = re.compile(line_re)
@@ -36,43 +37,46 @@ class Term:
 
 
 def candidate_terms(right: int) -> list[Term]:
+    return [Term(right, PLUS), Term(right, MULT)]
+
+def ext_candidate_terms(right: int) -> list[Term]:
     return [Term(right, PLUS), Term(right, MULT), Term(right, CONC)]
 
-def find_operators(solution: int, stack: list[tuple[int, Term]], values: list[int], current_result: int) -> list[tuple[int, Term]]:
+def find_operators(solution: int, stack: list[tuple[int, Term]], values: list[int], current_result: int) -> int:
     if len(values) != 0:
-        for new_term in candidate_terms(current_result):
+        for new_term in ext_candidate_terms(current_result):
             new_current_result = new_term.apply(values[0])
             stack.append(new_term)
             result = find_operators(solution, stack, values[1:], new_current_result)
-            if result:
-                return result
+            if result != 0:
+                return solution
             else:
                 stack.pop()
     else:
         if current_result == solution:
-            return stack
+            return solution
         else:
-            return None
+            return 0
+    return 0
 
-    
-
-def possible_solution(solution: int, values: list[int]):
-    current_result = values[0]
-    operators = [(None, current_result)]
+def find_solution(t: tuple[int, list[int]]):
+    solution = t[0]
+    values = t[1]
+    return find_operators(solution, [], values[1:], values[0])
 
 def main():
-    total_possible = 0
+    lines = []
     with open("day7/data.txt") as input_file:
         for line in input_file.readlines():
             m = line_pattern.match(line.strip())
             solution = int(m.group(1))
             values = [int(num) for num in number_pattern.findall(m.group(2))]
             #print(f"line: {line.strip()}, solution: {solution}, terms: {values}")
-            ops = find_operators(solution, [], values[1:], values[0])
-            #print(f"solution possible? {ops}")
-            if ops:
-                total_possible = total_possible + solution
-    print(f"total: {total_possible}")
+            lines.append((solution, values))
+    pool = Pool()
+    work = pool.map(find_solution, lines)
+
+    print(f"total: {sum(work)}")
 
 
 
