@@ -3,3 +3,51 @@ from typing import NamedTuple
 class Point(NamedTuple):
     y: int
     x: int
+
+    def __str__(self):
+        return f'{self.y}/{self.x}'
+
+class Map:
+    def __init__(self, empty_marker = '.'):
+        self.data = []
+        self.empty_marker = empty_marker
+        self.points_of_interest: dict[str, list[Point]] = {}
+
+    def add_line(self, line: str):
+        stripped = line.strip()
+        self.data.append(stripped)
+        for i in range(len(stripped)):
+            if stripped[i] != self.empty_marker:
+                interest = stripped[i]
+                current_point: Point = Point(len(self.data)-1, i)
+                if (self.points_of_interest.get(interest)):
+                    self.points_of_interest.get(interest).append(current_point)
+                else:
+                    self.points_of_interest[interest] = [ current_point ]
+    
+    def value_at(self, position: Point) -> str:
+        return self.data[position.y][position.x]
+    
+    def out_of_bounds(self, position: Point) -> bool:
+        if position.y < 0 or position.x < 0:
+            return True
+        if position.y > len(self.data)-1:
+            return True
+        if position.x > len(self.data[0])-1:
+            return True
+        
+    def interesting_points(self) -> list[str]:
+        return self.points_of_interest.keys()
+    
+    def points_with_interest(self, interest: str) -> list[Point]:
+        return self.points_of_interest.get(interest)
+
+    def mark(self, position: Point, mark: str, overwrite: bool = False):
+        if self.data[position.y][position.x] != self.empty_marker and not overwrite:
+            return
+        new_line = self.data[position.y][0:position.x] + mark + self.data[position.y][position.x+1:]
+        self.data[position.y] = new_line
+
+def print_map(m: Map):
+    for line in m.data:
+        print(f"{line}")
