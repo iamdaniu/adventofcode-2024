@@ -61,7 +61,7 @@ def is_safe(info: ListInfo, dampen = 0):
 def format_info(info):
     return f"neg: {info.negative_indices} pos: {info.positive_indices} th: {info.threshold_exceed_indices}"
 
-with open('day2/data.csv', newline='') as csvfile:
+with open('data/day2/data.csv', newline='') as csvfile:
 
     reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     

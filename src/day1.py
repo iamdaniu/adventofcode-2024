@@ -4,7 +4,7 @@ import collections
 
 list1 = []
 list2 = []
-with open('day1/data.csv', newline='') as csvfile:
+with open('data/day1/data.csv', newline='') as csvfile:
 
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 

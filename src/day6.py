@@ -65,7 +65,7 @@ def read_data(filename: str) -> tuple[list[list[bool]], Guard]:
 
 
 def main():
-    maze, guard = read_data('day6/sample.map')
+    maze, guard = read_data('data/day6/sample.map')
     for l in maze:
         out = ["#" if p else "-" for p in l]
         #print(f"{out}")

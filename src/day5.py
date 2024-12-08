@@ -33,7 +33,7 @@ incorrect_value_sum = 0
 
 sorter = OrderingSorter()
 
-with open("day5/sample.txt") as input_file:
+with open("data/day5/sample.txt") as input_file:
     reading_order = True
     for line in input_file.readlines():
         if line == "\n":

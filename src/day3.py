@@ -13,7 +13,7 @@ def calculate_line(line: str):
 
 
 # read into single line - don'()s stay valid over line boundaries
-with open('day3/data.mem', newline='') as input_file:
+with open('data/day3/data.mem', newline='') as input_file:
     line = input_file.read().replace('\n', '')
 
 total = calculate_line(line)

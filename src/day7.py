@@ -66,7 +66,7 @@ def find_solution(t: tuple[int, list[int]]):
 
 def main():
     lines = []
-    with open("day7/data.txt") as input_file:
+    with open("data/day7/data.txt") as input_file:
         for line in input_file.readlines():
             m = line_pattern.match(line.strip())
             solution = int(m.group(1))

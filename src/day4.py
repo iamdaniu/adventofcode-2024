@@ -66,7 +66,7 @@ def find_from(lines: list, point: tuple):
         result = result + find_in_direction(lines, point, 0, mode)
     return result
 
-with open('day4/data.txt', newline='') as input_file:
+with open('data/day4/data.txt', newline='') as input_file:
     lines = input_file.readlines()
 
 xmas_count = 0
