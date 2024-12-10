@@ -1,3 +1,6 @@
+
+import logging
+
 from typing import NamedTuple
 
 class Point(NamedTuple):
@@ -6,6 +9,9 @@ class Point(NamedTuple):
 
     def __str__(self):
         return f'{self.y}/{self.x}'
+    
+    def translate(self, vector: tuple[int, int]):
+        return Point(self.y + vector[0], self.x + vector[1])
 
 class Map:
     def __init__(self):
@@ -59,6 +65,9 @@ class MapOfInterest(Map):
             return
         super().mark(position, mark)
 
-def print_map(m: Map):
+def print_map(m: Map, logger: logging.Logger = None, level: int = logging.INFO):
+    printer = print
+    if logger:
+        printer = lambda m: logger.log(level, m)
     for line in m.data:
-        print(f"{line}")
+        printer(f'{line}')
