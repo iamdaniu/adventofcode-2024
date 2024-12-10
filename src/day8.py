@@ -2,11 +2,11 @@ from typing import Callable
 #from typing import Generator
 
 from map_lib import Point
-from map_lib import Map
+from map_lib import MapOfInterest
 from map_lib import print_map
 
-def read_map(filename: str) -> Map:
-    result: Map = Map()
+def read_map(filename: str) -> MapOfInterest:
+    result: MapOfInterest = MapOfInterest()
     with open(filename) as mapfile:
         for line in mapfile.readlines():
             result.add_line(line)
@@ -19,7 +19,7 @@ def generate_candidates(start_point: Point, diff: Point, op: Callable[[int, int]
         current_point = Point(op(current_point.y, diff.y), op(current_point.x, diff.x))
 
 
-def antinodes(tower_map: Map, frequency: str) -> set[Point]:
+def antinodes(tower_map: MapOfInterest, frequency: str) -> set[Point]:
     points = tower_map.points_with_interest(frequency)
     if (len(points) == 1):
         return set()
