@@ -3,6 +3,7 @@ import logging
 
 from typing import NamedTuple
 
+
 class Point(NamedTuple):
     y: int
     x: int
@@ -12,6 +13,13 @@ class Point(NamedTuple):
     
     def translate(self, vector: tuple[int, int]):
         return Point(self.y + vector[0], self.x + vector[1])
+
+    def is_neighbor(self, other) -> bool:
+        for direction in [(0,1), (0,-1), (1,0), (-1,0)]:
+            if self.translate(direction) == other:
+                return True
+        return False
+
 
 class Map:
     def __init__(self):
