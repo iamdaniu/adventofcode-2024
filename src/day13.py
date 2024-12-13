@@ -6,6 +6,8 @@ import logging
 from re import Pattern
 from re import Match
 
+adjust: int = 10000000000000
+
 button_re = r'Button [AB]: X\+(\d+), Y\+(\d+)'
 button_pattern = re.compile(button_re)
 
@@ -35,6 +37,7 @@ with open('data/day13/data.txt') as input_file:
         button_a = read_tuple(input_file.readline(), button_pattern)
         button_b = read_tuple(input_file.readline(), button_pattern)
         prize = read_tuple(input_file.readline(), prize_pattern)
+        prize = (prize[0] + adjust, prize[1] + adjust)
         logger.debug(f'button1: {button_a}, button2: {button_b}, prize: {prize}')
         b = int(calc_b(prize, button_a, button_b))
         a = int(calc_a(b, prize, button_a[0], button_b[0]))
@@ -46,7 +49,7 @@ with open('data/day13/data.txt') as input_file:
         else:
             diff_vector = (prize[0] - lands_at[0], prize[1] - lands_at[1])
             diff = math.sqrt(diff_vector[0]**2 + diff_vector[1]**2)
-            logger.warning(f'no solution; lands at {lands_at}, should {prize} - diff {diff}')
+            logger.debug(f'no solution; lands at {lands_at}, should {prize} - diff {diff}')
         if input_file.readline() == '':
             break
     print(f'total price: {total_price}')
