@@ -25,6 +25,9 @@ class Map:
     def __init__(self):
         self.data = []
 
+    def __init__(self, y: int, x: int):
+        self.data = [ '.'*x for i in range(y) ]
+
     def add_line(self, line: str):
         stripped = line.strip()
         self.data.append(stripped)
@@ -41,7 +44,11 @@ class Map:
             return True
 
     def mark(self, position: Point, mark: str):
-        new_line = self.data[position.y][0:position.x] + mark + self.data[position.y][position.x+1:]
+        old_line = self.data[position.y]
+        new_line = old_line[0:position.x]
+        new_line = new_line + mark
+        new_line = new_line + old_line[position.x+1:]
+        #new_line = self.data[position.y][0:position.x] + mark + self.data[position.y][position.x+1:]
         self.data[position.y] = new_line
 
 class MapOfInterest(Map):
